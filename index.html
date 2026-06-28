@@ -1,0 +1,1080 @@
+[sgi-cv-3.html](https://github.com/user-attachments/files/29428196/sgi-cv-3.html)
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SGI-CV 3.0 — Zea MayZ</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --verde: #0F6E56;
+    --verde-claro: #E1F5EE;
+    --verde-medio: #1D9E75;
+    --morado: #3C3489;
+    --morado-claro: #EEEDFE;
+    --gris-bg: #F7F6F2;
+    --gris-borde: #E0DED6;
+    --gris-texto: #6B6A65;
+    --negro: #1A1A18;
+    --blanco: #FFFFFF;
+    --rojo-claro: #FCEBEB;
+    --rojo: #A32D2D;
+    --amber-claro: #FAEEDA;
+    --amber: #854F0B;
+    --azul-claro: #E6F1FB;
+    --azul: #185FA5;
+    --radio: 10px;
+    --radio-sm: 6px;
+    --sombra: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--gris-bg);
+    color: var(--negro);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    background: var(--verde);
+    color: #fff;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 52px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .topbar-logo { font-size: 18px; font-weight: 600; letter-spacing: -.3px; flex: 1; }
+  .topbar-sub { font-size: 12px; opacity: .7; }
+
+  /* NAV */
+  .nav-wrap {
+    background: var(--blanco);
+    border-bottom: 1px solid var(--gris-borde);
+    padding: 0 2rem;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    position: sticky;
+    top: 52px;
+    z-index: 99;
+  }
+  .nav-btn {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--gris-texto);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color .15s;
+  }
+  .nav-btn:hover { color: var(--negro); }
+  .nav-btn.active { color: var(--verde); border-bottom-color: var(--verde); font-weight: 500; }
+  .nav-icon { font-size: 15px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* CARDS */
+  .card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio);
+    padding: 1.25rem 1.5rem;
+    box-shadow: var(--sombra);
+  }
+  .card + .card { margin-top: 1rem; }
+
+  /* STATS GRID */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .stat-card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio);
+    padding: 1rem;
+    text-align: center;
+  }
+  .stat-num { font-size: 28px; font-weight: 600; color: var(--verde); }
+  .stat-label { font-size: 12px; color: var(--gris-texto); margin-top: 2px; }
+
+  /* SECTION TITLE */
+  .sec-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--negro);
+  }
+
+  /* BADGES */
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 9px;
+    border-radius: 99px;
+    white-space: nowrap;
+  }
+  .badge-verde { background: var(--verde-claro); color: var(--verde); }
+  .badge-morado { background: var(--morado-claro); color: var(--morado); }
+  .badge-rojo { background: var(--rojo-claro); color: var(--rojo); }
+  .badge-amber { background: var(--amber-claro); color: var(--amber); }
+  .badge-azul { background: var(--azul-claro); color: var(--azul); }
+  .badge-gris { background: var(--gris-bg); color: var(--gris-texto); border: 1px solid var(--gris-borde); }
+
+  /* FORM */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { margin-bottom: 1rem; }
+  .form-group.full { grid-column: 1 / -1; }
+  label { display: block; font-size: 13px; color: var(--gris-texto); margin-bottom: 5px; font-weight: 500; }
+  label .req { color: #C0392B; }
+  input[type=text], input[type=date], input[type=url], input[type=number], select, textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio-sm);
+    font-size: 14px;
+    color: var(--negro);
+    background: var(--blanco);
+    transition: border-color .15s;
+    font-family: inherit;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--verde-medio);
+    box-shadow: 0 0 0 3px rgba(29,158,117,.12);
+  }
+  textarea { resize: vertical; min-height: 80px; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 20px;
+    border-radius: var(--radio-sm);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: opacity .15s, transform .1s;
+  }
+  .btn:active { transform: scale(.98); }
+  .btn-primary { background: var(--verde); color: #fff; }
+  .btn-primary:hover { background: var(--verde-medio); }
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--gris-borde);
+    color: var(--gris-texto);
+  }
+  .btn-ghost:hover { background: var(--gris-bg); }
+
+  /* TOAST */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--negro);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: var(--radio);
+    font-size: 14px;
+    transition: transform .3s;
+    z-index: 9999;
+    pointer-events: none;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* CONV CARD */
+  .conv-card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 12px;
+    box-shadow: var(--sombra);
+  }
+  .conv-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 8px;
+  }
+  .conv-card-nombre { font-size: 15px; font-weight: 600; }
+  .conv-card-meta { font-size: 13px; color: var(--gris-texto); margin-top: 2px; }
+  .conv-card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .conv-card-estado-btns { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--gris-borde); }
+  .estado-btn {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 99px;
+    border: 1px solid var(--gris-borde);
+    background: transparent;
+    cursor: pointer;
+    color: var(--gris-texto);
+    transition: all .15s;
+  }
+  .estado-btn:hover { background: var(--gris-bg); }
+  .estado-btn.sel { background: var(--verde); color: #fff; border-color: var(--verde); }
+
+  /* TAREAS */
+  .persona-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 1.5rem;
+  }
+  .avatar {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .av-wilson { background: #FAEEDA; color: #854F0B; }
+  .av-mario { background: var(--morado-claro); color: var(--morado); }
+  .av-fray { background: var(--verde-claro); color: var(--verde); }
+  .persona-info-name { font-size: 18px; font-weight: 600; }
+  .persona-info-role { font-size: 13px; color: var(--gris-texto); }
+
+  .progress-wrap { margin-top: 8px; margin-bottom: 12px; }
+  .progress-bar { height: 6px; background: var(--gris-bg); border-radius: 99px; overflow: hidden; border: 1px solid var(--gris-borde); }
+  .progress-fill { height: 100%; background: var(--verde-medio); border-radius: 99px; transition: width .3s; }
+  .progress-txt { font-size: 12px; color: var(--gris-texto); margin-top: 4px; }
+
+  .tarea-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gris-borde);
+  }
+  .tarea-item:last-child { border-bottom: none; }
+  .tarea-check {
+    width: 20px; height: 20px;
+    border-radius: 5px;
+    border: 2px solid var(--gris-borde);
+    background: var(--blanco);
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .15s;
+  }
+  .tarea-check:hover { border-color: var(--verde-medio); }
+  .tarea-check.done { background: var(--verde); border-color: var(--verde); }
+  .tarea-check.done::after {
+    content: '';
+    display: block;
+    width: 10px; height: 6px;
+    border-left: 2.5px solid #fff;
+    border-bottom: 2.5px solid #fff;
+    transform: rotate(-45deg) translate(1px, -1px);
+  }
+  .tarea-body { flex: 1; }
+  .tarea-fase {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--verde);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 2px;
+  }
+  .tarea-texto {
+    font-size: 14px;
+    line-height: 1.5;
+    transition: color .15s;
+  }
+  .tarea-texto.done { text-decoration: line-through; color: var(--gris-texto); }
+  .tarea-notas {
+    width: 100%;
+    margin-top: 6px;
+    padding: 6px 10px;
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio-sm);
+    font-size: 13px;
+    color: var(--negro);
+    background: var(--gris-bg);
+    font-family: inherit;
+    resize: vertical;
+    min-height: 52px;
+  }
+  .tarea-notas:focus { outline: none; border-color: var(--verde-medio); background: var(--blanco); }
+  .tarea-link {
+    margin-top: 6px;
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio-sm);
+    font-size: 13px;
+    background: var(--gris-bg);
+    font-family: inherit;
+  }
+  .tarea-link:focus { outline: none; border-color: var(--verde-medio); background: var(--blanco); }
+
+  /* KANBAN */
+  .kanban { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .kanban-col { background: var(--gris-bg); border-radius: var(--radio); padding: 12px; border: 1px solid var(--gris-borde); }
+  .kanban-col-title { font-size: 12px; font-weight: 600; color: var(--gris-texto); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
+  .kanban-card { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: var(--radio-sm); padding: 10px 12px; margin-bottom: 8px; box-shadow: var(--sombra); }
+  .kanban-card-title { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .kanban-card-meta { font-size: 12px; color: var(--gris-texto); }
+  .kanban-empty { font-size: 12px; color: var(--gris-texto); text-align: center; padding: 10px 0; }
+
+  /* EMPTY */
+  .empty-state {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    border: 1.5px dashed var(--gris-borde);
+    border-radius: var(--radio);
+    color: var(--gris-texto);
+    font-size: 14px;
+  }
+  .empty-state strong { display: block; font-size: 15px; margin-bottom: 4px; color: var(--negro); }
+
+  /* PILARES */
+  .pilares-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .pilar-card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio);
+    padding: 1rem 1.25rem;
+    border-left: 4px solid var(--verde);
+  }
+  .pilar-num { font-size: 11px; font-weight: 700; color: var(--verde); text-transform: uppercase; letter-spacing: .5px; }
+  .pilar-titulo { font-size: 15px; font-weight: 600; margin: 4px 0 6px; }
+  .pilar-desc { font-size: 13px; color: var(--gris-texto); line-height: 1.5; }
+  .pilar-items { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px; }
+
+  /* FASES */
+  .fases-list { display: flex; flex-direction: column; gap: 0; }
+  .fase-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--gris-borde);
+  }
+  .fase-row:last-child { border-bottom: none; }
+  .fase-num {
+    width: 36px; height: 36px;
+    background: var(--verde-claro);
+    color: var(--verde);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .fase-body { flex: 1; }
+  .fase-titulo { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .fase-desc { font-size: 13px; color: var(--gris-texto); }
+
+  /* EQUIPO */
+  .equipo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .eq-card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio);
+    padding: 1.25rem;
+    text-align: center;
+  }
+  .eq-avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 700;
+    margin: 0 auto 10px;
+  }
+  .eq-name { font-size: 16px; font-weight: 600; }
+  .eq-role { font-size: 12px; color: var(--gris-texto); margin-bottom: 10px; }
+  .eq-tareas { text-align: left; }
+  .eq-tarea { font-size: 13px; padding: 4px 0; color: var(--gris-texto); display: flex; gap: 6px; }
+  .eq-tarea::before { content: '→'; color: var(--verde); flex-shrink: 0; }
+
+  /* ALERTAS */
+  .alerta-regla {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gris-borde);
+  }
+  .alerta-regla:last-child { border-bottom: none; }
+  .alerta-icon { font-size: 22px; flex-shrink: 0; width: 32px; text-align: center; }
+  .alerta-txt { font-size: 13px; color: var(--gris-texto); }
+  .alerta-titulo { font-weight: 600; color: var(--negro); font-size: 14px; }
+
+  @media (max-width: 640px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .kanban { grid-template-columns: 1fr 1fr; }
+    .pilares-grid { grid-template-columns: 1fr; }
+    .equipo-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(3, 1fr); }
+    .main { padding: 1rem; }
+    .topbar { padding: 0 1rem; }
+    .nav-wrap { padding: 0 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<div class="topbar">
+  <div>
+    <div class="topbar-logo">🌱 SGI-CV 3.0 — Zea MayZ</div>
+    <div class="topbar-sub">Sistema de Gestión Integral Comunidad Viva · Módulo de Convocatorias</div>
+  </div>
+</div>
+
+<div class="nav-wrap">
+  <button class="nav-btn active" onclick="showSection('tablero',this)">📊 Tablero</button>
+  <button class="nav-btn" onclick="showSection('nueva',this)">➕ Nueva</button>
+  <button class="nav-btn" onclick="showSection('todas',this)">📁 Todas</button>
+  <button class="nav-btn" onclick="showSection('wilson',this)">👤 Wilson</button>
+  <button class="nav-btn" onclick="showSection('mario',this)">👤 Mario</button>
+  <button class="nav-btn" onclick="showSection('fray',this)">👤 Fray</button>
+  <button class="nav-btn" onclick="showSection('kanban',this)">🔄 Kanban</button>
+  <button class="nav-btn" onclick="showSection('alertas',this)">🔔 Alertas</button>
+  <button class="nav-btn" onclick="showSection('pilares',this)">🏛️ Pilares</button>
+  <button class="nav-btn" onclick="showSection('fases',this)">🔄 Fases</button>
+  <button class="nav-btn" onclick="showSection('equipo',this)">👥 Equipo</button>
+</div>
+
+<div class="main">
+
+  <!-- TABLERO -->
+  <div id="sec-tablero" class="section active">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num" id="st-total">0</div><div class="stat-label">Total registradas</div></div>
+      <div class="stat-card"><div class="stat-num" id="st-proceso">0</div><div class="stat-label">En proceso</div></div>
+      <div class="stat-card"><div class="stat-num" id="st-pres">0</div><div class="stat-label">Presentadas</div></div>
+      <div class="stat-card"><div class="stat-num" id="st-gan">0</div><div class="stat-label">Ganadas ✅</div></div>
+      <div class="stat-card"><div class="stat-num" id="st-desc">0</div><div class="stat-label">Descartadas</div></div>
+      <div class="stat-card"><div class="stat-num" id="st-tasa">0%</div><div class="stat-label">Tasa de éxito</div></div>
+    </div>
+    <div class="sec-title">Convocatorias activas</div>
+    <div id="tablero-lista"></div>
+    <div style="margin-top:1.5rem;padding:1rem;background:var(--verde-claro);border-radius:var(--radio);border-left:4px solid var(--verde)">
+      <div style="font-size:13px;color:var(--verde);font-weight:600;margin-bottom:6px">Principios SGI-CV en acción</div>
+      <div style="font-size:13px;color:#1A5040;line-height:1.7">
+        Las convocatorias no se gestionan como emergencias; se gestionan como procesos.<br>
+        El formulario manda; Comunidad Viva acompaña.<br>
+        No construimos proyectos; construimos activos institucionales reutilizables.
+      </div>
+    </div>
+  </div>
+
+  <!-- NUEVA -->
+  <div id="sec-nueva" class="section">
+    <div class="sec-title">➕ Registrar nueva convocatoria</div>
+    <p style="font-size:13px;color:var(--gris-texto);margin-bottom:1rem">Wilson registra · Mario aprueba · Fray apoya · Sistema hace seguimiento</p>
+    <div class="card">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Nombre de la convocatoria <span class="req">*</span></label>
+          <input type="text" id="f-nombre" placeholder="Ej: Aceleradora de la Democracia Climática 2026">
+        </div>
+        <div class="form-group">
+          <label>Entidad convocante <span class="req">*</span></label>
+          <input type="text" id="f-entidad" placeholder="Ej: PNUD, GIZ, UE...">
+        </div>
+        <div class="form-group">
+          <label>Fecha límite de entrega <span class="req">*</span></label>
+          <input type="date" id="f-fecha">
+        </div>
+        <div class="form-group">
+          <label>Monto / Presupuesto</label>
+          <input type="text" id="f-monto" placeholder="Ej: USD 50,000">
+        </div>
+        <div class="form-group">
+          <label>Responsable principal</label>
+          <select id="f-resp">
+            <option value="Wilson">Wilson — Director general</option>
+            <option value="Mario">Mario — Gerente general</option>
+            <option value="Fray">Fray — Jefe M&amp;E</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Pilar SGI-CV relacionado</label>
+          <select id="f-pilar">
+            <option value="">Seleccionar...</option>
+            <option value="P1">P1 — Inteligencia Estratégica</option>
+            <option value="P2">P2 — Formulación Inteligente</option>
+            <option value="P3">P3 — Gestión Basada en Resultados</option>
+            <option value="P4">P4 — Innovación y Conocimiento</option>
+            <option value="P5">P5 — Gestión Adaptativa</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Enlace de la convocatoria</label>
+          <input type="url" id="f-link" placeholder="https://...">
+        </div>
+        <div class="form-group full">
+          <label>Descripción / objetivos estratégicos</label>
+          <textarea id="f-desc" placeholder="Describe los objetivos y el contexto estratégico..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>¿Cumple criterios de elegibilidad?</label>
+          <select id="f-eleg">
+            <option value="si">✅ Sí — cumple requisitos</option>
+            <option value="parcial">⚠️ Parcialmente — revisar con Mario</option>
+            <option value="pendiente">🔍 Pendiente de revisión</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>¿Es convocatoria ya revisada anteriormente?</label>
+          <select id="f-revisada">
+            <option value="no">No — es nueva</option>
+            <option value="si">Sí — ya fue revisada antes</option>
+          </select>
+        </div>
+        <div class="form-group full" id="razon-wrap" style="display:none">
+          <label>Razón por la que se revisa nuevamente</label>
+          <textarea id="f-razon" placeholder="Explica por qué se vuelve a revisar..."></textarea>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="registrar()">✅ Registrar convocatoria en el sistema</button>
+      <span id="form-msg" style="margin-left:12px;font-size:13px"></span>
+    </div>
+  </div>
+
+  <!-- TODAS -->
+  <div id="sec-todas" class="section">
+    <div class="sec-title">📁 Todas las convocatorias</div>
+    <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap">
+      <select id="filtro-estado" onchange="renderTodas()" style="font-size:13px;padding:6px 10px;border:1px solid var(--gris-borde);border-radius:var(--radio-sm);background:var(--blanco)">
+        <option value="">Todos los estados</option>
+        <option>Identificada</option>
+        <option>En preparación</option>
+        <option>Enviada</option>
+        <option>Ganada</option>
+        <option>No ganada</option>
+        <option>Descartada</option>
+      </select>
+      <select id="filtro-resp" onchange="renderTodas()" style="font-size:13px;padding:6px 10px;border:1px solid var(--gris-borde);border-radius:var(--radio-sm);background:var(--blanco)">
+        <option value="">Todos los responsables</option>
+        <option>Wilson</option><option>Mario</option><option>Fray</option>
+      </select>
+    </div>
+    <div id="lista-todas"></div>
+  </div>
+
+  <!-- WILSON -->
+  <div id="sec-wilson" class="section">
+    <div class="persona-header">
+      <div class="avatar av-wilson">W</div>
+      <div>
+        <div class="persona-info-name">Wilson</div>
+        <div class="persona-info-role">Director general · registra, coordina, envía</div>
+      </div>
+    </div>
+    <div id="wilson-tareas"></div>
+  </div>
+
+  <!-- MARIO -->
+  <div id="sec-mario" class="section">
+    <div class="persona-header">
+      <div class="avatar av-mario">M</div>
+      <div>
+        <div class="persona-info-name">Mario</div>
+        <div class="persona-info-role">Gerente general · aprueba, formula, decide</div>
+      </div>
+    </div>
+    <div id="mario-tareas"></div>
+  </div>
+
+  <!-- FRAY -->
+  <div id="sec-fray" class="section">
+    <div class="persona-header">
+      <div class="avatar av-fray">F</div>
+      <div>
+        <div class="persona-info-name">Fray</div>
+        <div class="persona-info-role">Jefe de M&amp;E · revisa, apoya, registra</div>
+      </div>
+    </div>
+    <div id="fray-tareas"></div>
+  </div>
+
+  <!-- KANBAN -->
+  <div id="sec-kanban" class="section">
+    <div class="sec-title">🔄 Ciclo de vida — Vista Kanban</div>
+    <div class="kanban">
+      <div class="kanban-col"><div class="kanban-col-title">🔍 Identificada</div><div id="k-id"></div></div>
+      <div class="kanban-col"><div class="kanban-col-title">✏️ Preparación</div><div id="k-prep"></div></div>
+      <div class="kanban-col"><div class="kanban-col-title">📤 Enviada</div><div id="k-env"></div></div>
+      <div class="kanban-col"><div class="kanban-col-title">✅ Ganada</div><div id="k-gan"></div></div>
+    </div>
+  </div>
+
+  <!-- ALERTAS -->
+  <div id="sec-alertas" class="section">
+    <div class="sec-title">🔔 Centro de alertas</div>
+    <div id="alertas-lista" style="margin-bottom:1.5rem"></div>
+    <div class="card">
+      <div class="sec-title" style="font-size:14px;margin-bottom:.75rem">Reglas del sistema de alertas SGI-CV</div>
+      <div class="alerta-regla"><div class="alerta-icon">🚨</div><div><div class="alerta-titulo">URGENTE — 3 días o menos</div><div class="alerta-txt">Activar Fase 7: Envío. Verificar documentación completa con Wilson.</div></div></div>
+      <div class="alerta-regla"><div class="alerta-icon">⏰</div><div><div class="alerta-titulo">ATENCIÓN — 4 a 7 días</div><div class="alerta-txt">Fase 6: Revisión de calidad. Mario aprueba versión final.</div></div></div>
+      <div class="alerta-regla"><div class="alerta-icon">🔔</div><div><div class="alerta-titulo">AVISO — 8 a 15 días</div><div class="alerta-txt">Fase 5: Formulación en curso. Fray apoya el borrador.</div></div></div>
+      <div class="alerta-regla"><div class="alerta-icon">📋</div><div><div class="alerta-titulo">PLANIFICACIÓN — más de 15 días</div><div class="alerta-txt">Fases 1–4: Análisis estratégico, arquitectura técnica y cronograma inverso.</div></div></div>
+    </div>
+  </div>
+
+  <!-- PILARES -->
+  <div id="sec-pilares" class="section">
+    <div class="sec-title">🏛️ Los 5 Pilares del SGI-CV 2.0</div>
+    <p style="font-size:13px;color:var(--gris-texto);margin-bottom:1rem">Arquitectura institucional Comunidad Viva · Zea MayZ</p>
+    <div class="pilares-grid">
+      <div class="pilar-card">
+        <div class="pilar-num">Pilar 1</div>
+        <div class="pilar-titulo">🎯 Inteligencia Estratégica</div>
+        <div class="pilar-desc">¿A qué oportunidades debemos responder y por qué?</div>
+        <div class="pilar-items">
+          <span class="badge badge-verde">Radar de convocatorias</span>
+          <span class="badge badge-verde">Matriz de elegibilidad</span>
+          <span class="badge badge-verde">Mapa de aliados</span>
+          <span class="badge badge-verde">Sistema de alertas</span>
+        </div>
+      </div>
+      <div class="pilar-card">
+        <div class="pilar-num">Pilar 2</div>
+        <div class="pilar-titulo">📝 Formulación Inteligente</div>
+        <div class="pilar-desc">¿Cómo diseñamos propuestas de alta calidad?</div>
+        <div class="pilar-items">
+          <span class="badge badge-morado">Revisar TDR</span>
+          <span class="badge badge-morado">Template oficial</span>
+          <span class="badge badge-morado">Cronograma inverso</span>
+          <span class="badge badge-morado">Master Sheet</span>
+        </div>
+      </div>
+      <div class="pilar-card">
+        <div class="pilar-num">Pilar 3</div>
+        <div class="pilar-titulo">📊 Gestión Basada en Resultados</div>
+        <div class="pilar-desc">¿Qué queremos transformar y cómo lo mediremos?</div>
+        <div class="pilar-items">
+          <span class="badge badge-azul">Impacto</span>
+          <span class="badge badge-azul">Outcomes</span>
+          <span class="badge badge-azul">Outputs</span>
+          <span class="badge badge-azul">Actividades</span>
+        </div>
+      </div>
+      <div class="pilar-card">
+        <div class="pilar-num">Pilar 4</div>
+        <div class="pilar-titulo">💡 Innovación y Conocimiento</div>
+        <div class="pilar-desc">¿Qué conocimiento estamos creando?</div>
+        <div class="pilar-items">
+          <span class="badge badge-amber">Banco de indicadores</span>
+          <span class="badge badge-amber">Banco de narrativas</span>
+          <span class="badge badge-amber">Banco de evidencias</span>
+        </div>
+      </div>
+      <div class="pilar-card" style="grid-column:1/-1">
+        <div class="pilar-num">Pilar 5</div>
+        <div class="pilar-titulo">🔄 Gestión Adaptativa</div>
+        <div class="pilar-desc">¿Cómo nos adaptamos sin perder el rumbo?</div>
+        <div class="pilar-items">
+          <span class="badge badge-gris">Revisiones trimestrales</span>
+          <span class="badge badge-gris">Semáforos de gestión</span>
+          <span class="badge badge-gris">Gestión de riesgos</span>
+          <span class="badge badge-gris">Lecciones aprendidas</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FASES -->
+  <div id="sec-fases" class="section">
+    <div class="sec-title">🔄 Ciclo de vida — 9 Fases SGI-CV</div>
+    <p style="font-size:13px;color:var(--gris-texto);margin-bottom:1rem">Desde la identificación hasta el aprendizaje institucional</p>
+    <div class="card">
+      <div class="fases-list">
+        <div class="fase-row"><div class="fase-num">F0</div><div class="fase-body"><div class="fase-titulo">Activación</div><div class="fase-desc">Wilson detecta oportunidad. Registro en el sistema. Notificación automática al equipo.</div></div></div>
+        <div class="fase-row"><div class="fase-num">F1</div><div class="fase-body"><div class="fase-titulo">Análisis estratégico</div><div class="fase-desc">Mario revisa alineación con Comunidad Viva. Matriz de elegibilidad. Decisión: ¿presentamos?</div></div></div>
+        <div class="fase-row"><div class="fase-num">F2</div><div class="fase-body"><div class="fase-titulo">Arquitectura técnica</div><div class="fase-desc">Mario + Fray. Teoría de cambio, marco de resultados. Pentágono Comunidad Viva.</div></div></div>
+        <div class="fase-row"><div class="fase-num">F3</div><div class="fase-body"><div class="fase-titulo">Revisión documental</div><div class="fase-desc">Wilson revisa TDR y documentos jurídicos. Abre template oficial. Master Sheet.</div></div></div>
+        <div class="fase-row"><div class="fase-num">F4</div><div class="fase-body"><div class="fase-titulo">Cronograma inverso</div><div class="fase-desc">Wilson construye cronograma desde fecha límite hacia atrás. Asigna hitos por responsable.</div></div></div>
+        <div class="fase-row"><div class="fase-num">F5</div><div class="fase-body"><div class="fase-titulo">Formulación</div><div class="fase-desc">Mario lidera el borrador con apoyo de Fray. Se nutre del banco de narrativas y evidencias.</div></div></div>
+        <div class="fase-row"><div class="fase-num">F6</div><div class="fase-body"><div class="fase-titulo">Revisión de calidad</div><div class="fase-desc">Wilson y Fray revisan. Checklist Comunidad Viva. Mario aprueba versión final.</div></div></div>
+        <div class="fase-row"><div class="fase-num">F7</div><div class="fase-body"><div class="fase-titulo">Envío ⏰</div><div class="fase-desc">Wilson sube documentación completa a la plataforma antes del plazo. Alerta 3 días antes.</div></div></div>
+        <div class="fase-row"><div class="fase-num">F8</div><div class="fase-body"><div class="fase-titulo">Aprendizaje institucional</div><div class="fase-desc">Registro de lecciones aprendidas. Actualización de la Biblioteca Viva. Generación de activos reutilizables.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EQUIPO -->
+  <div id="sec-equipo" class="section">
+    <div class="sec-title">👥 Equipo SGI-CV</div>
+    <div class="equipo-grid">
+      <div class="eq-card">
+        <div class="eq-avatar av-wilson">W</div>
+        <div class="eq-name">Wilson</div>
+        <div class="eq-role">Director general</div>
+        <div class="eq-tareas">
+          <div class="eq-tarea">Busca y registra convocatorias</div>
+          <div class="eq-tarea">Construye cronograma inverso</div>
+          <div class="eq-tarea">Revisa documentos jurídicos y TDR</div>
+          <div class="eq-tarea">Revisa borrador de propuesta</div>
+          <div class="eq-tarea">Sube documentación a plataforma</div>
+        </div>
+      </div>
+      <div class="eq-card">
+        <div class="eq-avatar av-mario">M</div>
+        <div class="eq-name">Mario</div>
+        <div class="eq-role">Gerente general</div>
+        <div class="eq-tareas">
+          <div class="eq-tarea">Enlace con Comunidad Viva</div>
+          <div class="eq-tarea">Aprueba o descarta convocatorias</div>
+          <div class="eq-tarea">Define teoría de cambio y resultados</div>
+          <div class="eq-tarea">Lidera elaboración del borrador</div>
+          <div class="eq-tarea">Aprobación final de la propuesta</div>
+        </div>
+      </div>
+      <div class="eq-card">
+        <div class="eq-avatar av-fray">F</div>
+        <div class="eq-name">Fray</div>
+        <div class="eq-role">Jefe de M&amp;E</div>
+        <div class="eq-tareas">
+          <div class="eq-tarea">Busca y revisa convocatorias</div>
+          <div class="eq-tarea">Apoya marco de resultados (GBR)</div>
+          <div class="eq-tarea">Apoya elaboración del borrador</div>
+          <div class="eq-tarea">Aprueba revisión de propuestas</div>
+          <div class="eq-tarea">Registra lecciones aprendidas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// ─── DATA ───────────────────────────────────────────────
+const TAREAS = {
+  Wilson: [
+    {fase:'F0', texto:'Detectar y registrar la convocatoria en el sistema'},
+    {fase:'F3', texto:'Revisar TDR y documentos jurídicos de la convocatoria'},
+    {fase:'F3', texto:'Abrir template oficial desde el primer día'},
+    {fase:'F4', texto:'Construir cronograma inverso desde la fecha límite'},
+    {fase:'F4', texto:'Asignar hitos por responsable en el cronograma'},
+    {fase:'F6', texto:'Revisar borrador de propuesta con checklist Comunidad Viva'},
+    {fase:'F7', texto:'Subir documentación completa a la plataforma antes del plazo'},
+  ],
+  Mario: [
+    {fase:'F1', texto:'Revisar alineación con Comunidad Viva y aplicar Matriz de elegibilidad'},
+    {fase:'F1', texto:'Decidir si la convocatoria se presenta o se descarta'},
+    {fase:'F2', texto:'Definir teoría de cambio y marco de resultados (con Fray)'},
+    {fase:'F2', texto:'Construir el Pentágono Comunidad Viva'},
+    {fase:'F5', texto:'Liderar la elaboración del borrador de la propuesta'},
+    {fase:'F6', texto:'Dar aprobación final de la propuesta'},
+  ],
+  Fray: [
+    {fase:'F1', texto:'Buscar y revisar la convocatoria'},
+    {fase:'F2', texto:'Apoyar el marco de resultados basado en GBR (con Mario)'},
+    {fase:'F5', texto:'Apoyar la elaboración del borrador de la propuesta'},
+    {fase:'F6', texto:'Revisar la propuesta con checklist Comunidad Viva'},
+    {fase:'F8', texto:'Registrar lecciones aprendidas y actualizar la Biblioteca Viva'},
+  ],
+};
+
+let convocatorias = JSON.parse(localStorage.getItem('sgi-convs') || '[]');
+let tareaData = JSON.parse(localStorage.getItem('sgi-tareas') || '{}');
+
+function save() {
+  localStorage.setItem('sgi-convs', JSON.stringify(convocatorias));
+  localStorage.setItem('sgi-tareas', JSON.stringify(tareaData));
+}
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ─── NAV ────────────────────────────────────────────────
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  const renders = {
+    tablero: renderTablero,
+    todas: renderTodas,
+    wilson: () => renderPersona('Wilson'),
+    mario: () => renderPersona('Mario'),
+    fray: () => renderPersona('Fray'),
+    kanban: renderKanban,
+    alertas: renderAlertas,
+  };
+  if (renders[id]) renders[id]();
+}
+
+// ─── REGISTRO ───────────────────────────────────────────
+document.getElementById('f-revisada').addEventListener('change', function() {
+  document.getElementById('razon-wrap').style.display = this.value === 'si' ? 'block' : 'none';
+});
+
+function registrar() {
+  const nombre = document.getElementById('f-nombre').value.trim();
+  const entidad = document.getElementById('f-entidad').value.trim();
+  const fecha = document.getElementById('f-fecha').value;
+  if (!nombre || !entidad || !fecha) {
+    document.getElementById('form-msg').style.color = '#C0392B';
+    document.getElementById('form-msg').textContent = 'Completa los campos obligatorios (*)';
+    return;
+  }
+  const conv = {
+    id: Date.now(),
+    nombre, entidad, fecha,
+    monto: document.getElementById('f-monto').value,
+    resp: document.getElementById('f-resp').value,
+    pilar: document.getElementById('f-pilar').value,
+    link: document.getElementById('f-link').value,
+    desc: document.getElementById('f-desc').value,
+    eleg: document.getElementById('f-eleg').value,
+    revisada: document.getElementById('f-revisada').value,
+    razon: document.getElementById('f-razon').value,
+    estado: 'Identificada',
+    fechaReg: new Date().toISOString().split('T')[0],
+  };
+  convocatorias.push(conv);
+  save();
+  ['f-nombre','f-entidad','f-fecha','f-monto','f-link','f-desc','f-razon'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('form-msg').style.color = 'var(--verde)';
+  document.getElementById('form-msg').textContent = '✅ Convocatoria registrada correctamente';
+  setTimeout(() => document.getElementById('form-msg').textContent = '', 3000);
+  toast('Convocatoria registrada: ' + conv.nombre);
+  renderTablero();
+}
+
+// ─── TABLERO ────────────────────────────────────────────
+function renderTablero() {
+  const activas = convocatorias.filter(c => !['Descartada','Ganada','No ganada'].includes(c.estado));
+  const pres = convocatorias.filter(c => c.estado === 'Enviada');
+  const gan = convocatorias.filter(c => c.estado === 'Ganada');
+  const desc = convocatorias.filter(c => c.estado === 'Descartada');
+  document.getElementById('st-total').textContent = convocatorias.length;
+  document.getElementById('st-proceso').textContent = activas.length;
+  document.getElementById('st-pres').textContent = pres.length;
+  document.getElementById('st-gan').textContent = gan.length;
+  document.getElementById('st-desc').textContent = desc.length;
+  const base = pres.length + gan.length;
+  document.getElementById('st-tasa').textContent = base > 0 ? Math.round(gan.length / base * 100) + '%' : '0%';
+  const el = document.getElementById('tablero-lista');
+  if (!activas.length) { el.innerHTML = '<div class="empty-state"><strong>Sin convocatorias activas</strong>Ve a "Nueva" para registrar una.</div>'; return; }
+  el.innerHTML = activas.map(c => `
+    <div class="conv-card">
+      <div class="conv-card-top">
+        <div>
+          ${c.pilar ? '<span class="badge badge-verde" style="margin-bottom:6px;display:inline-block">' + c.pilar + '</span><br>' : ''}
+          <div class="conv-card-nombre">${c.nombre}</div>
+          <div class="conv-card-meta">${c.entidad} · Vence: ${c.fecha}</div>
+        </div>
+        <span class="badge ${estadoBadge(c.estado)}">${c.estado}</span>
+      </div>
+      <div class="conv-card-tags">
+        <span class="badge badge-gris">Resp: ${c.resp}</span>
+        ${c.monto ? '<span class="badge badge-gris">' + c.monto + '</span>' : ''}
+        <span class="badge ${elegBadge(c.eleg)}">${elegLabel(c.eleg)}</span>
+      </div>
+      ${c.desc ? '<div style="margin-top:10px;font-size:13px;color:var(--gris-texto)">' + c.desc + '</div>' : ''}
+    </div>
+  `).join('');
+}
+
+// ─── TODAS ──────────────────────────────────────────────
+function renderTodas() {
+  const estado = document.getElementById('filtro-estado').value;
+  const resp = document.getElementById('filtro-resp').value;
+  let lista = convocatorias.filter(c =>
+    (!estado || c.estado === estado) && (!resp || c.resp === resp)
+  );
+  const el = document.getElementById('lista-todas');
+  if (!lista.length) { el.innerHTML = '<div class="empty-state"><strong>Sin resultados</strong>Cambia los filtros o registra una convocatoria.</div>'; return; }
+  el.innerHTML = lista.map(c => `
+    <div class="conv-card">
+      <div class="conv-card-top">
+        <div>
+          <div class="conv-card-nombre">${c.nombre}</div>
+          <div class="conv-card-meta">${c.entidad} · ${c.fecha}${c.monto ? ' · ' + c.monto : ''}</div>
+        </div>
+        <span class="badge ${estadoBadge(c.estado)}">${c.estado}</span>
+      </div>
+      <div class="conv-card-tags">
+        ${c.pilar ? '<span class="badge badge-verde">' + c.pilar + '</span>' : ''}
+        <span class="badge badge-gris">${c.resp}</span>
+        <span class="badge ${elegBadge(c.eleg)}">${elegLabel(c.eleg)}</span>
+      </div>
+      ${c.desc ? '<div style="margin-top:8px;font-size:13px;color:var(--gris-texto)">' + c.desc + '</div>' : ''}
+      ${c.link ? '<div style="margin-top:6px"><a href="' + c.link + '" target="_blank" style="font-size:13px;color:var(--verde)">🔗 Ver convocatoria</a></div>' : ''}
+      <div class="conv-card-estado-btns">
+        <span style="font-size:12px;color:var(--gris-texto);align-self:center">Cambiar estado:</span>
+        ${['Identificada','En preparación','Enviada','Ganada','No ganada','Descartada'].map(e =>
+          `<button class="estado-btn ${c.estado === e ? 'sel' : ''}" onclick="cambiarEstado(${c.id},'${e}')">${e}</button>`
+        ).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function cambiarEstado(id, estado) {
+  const c = convocatorias.find(x => x.id === id);
+  if (c) { c.estado = estado; save(); renderTodas(); renderTablero(); renderKanban(); toast('Estado actualizado: ' + estado); }
+}
+
+// ─── TAREAS POR PERSONA ─────────────────────────────────
+function getTKey(cid, persona, idx) { return cid + '-' + persona + '-' + idx; }
+
+function renderPersona(persona) {
+  const tareas = TAREAS[persona];
+  const elId = persona.toLowerCase() + '-tareas';
+  const el = document.getElementById(elId);
+  const activas = convocatorias.filter(c => c.estado !== 'Descartada');
+  if (!activas.length) {
+    el.innerHTML = '<div class="empty-state"><strong>Sin convocatorias activas</strong>Registra una convocatoria para ver las tareas de ' + persona + '.</div>';
+    return;
+  }
+  el.innerHTML = activas.map(c => {
+    const done = tareas.filter((_, i) => tareaData[getTKey(c.id, persona, i)+'_check']).length;
+    const pct = Math.round(done / tareas.length * 100);
+    return `
+      <div class="card" style="margin-bottom:1rem">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div>
+            <div style="font-size:15px;font-weight:600">${c.nombre}</div>
+            <div style="font-size:13px;color:var(--gris-texto)">${c.entidad} · Vence: ${c.fecha}</div>
+          </div>
+          <span class="badge ${estadoBadge(c.estado)}">${c.estado}</span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" id="pf-${c.id}-${persona}" style="width:${pct}%"></div></div>
+          <div class="progress-txt" id="pt-${c.id}-${persona}">${done} de ${tareas.length} tareas completadas</div>
+        </div>
+        ${tareas.map((t, i) => {
+          const k = getTKey(c.id, persona, i);
+          const chk = !!tareaData[k + '_check'];
+          const nota = tareaData[k + '_nota'] || '';
+          const link = tareaData[k + '_link'] || '';
+          return `
+            <div class="tarea-item" id="ti-${k}">
+              <div class="tarea-check ${chk ? 'done' : ''}" id="chk-${k}" onclick="toggleCheck(${c.id},'${persona}',${i})" title="Marcar como completada"></div>
+              <div class="tarea-body">
+                <div class="tarea-fase">${t.fase}</div>
+                <div class="tarea-texto ${chk ? 'done' : ''}" id="txt-${k}">${t.texto}</div>
+                <textarea class="tarea-notas" id="nota-${k}" placeholder="Agregar observaciones, avances o notas..." onchange="saveNota('${k}','nota')" onblur="saveNota('${k}','nota')">${nota}</textarea>
+                <input class="tarea-link" type="url" id="link-${k}" placeholder="Pegar enlace de evidencia o documento..." value="${link}" onchange="saveNota('${k}','link')" onblur="saveNota('${k}','link')">
+              </div>
+            </div>`;
+        }).join('')}
+      </div>`;
+  }).join('');
+}
+
+function toggleCheck(cid, persona, idx) {
+  const k = getTKey(cid, persona, idx);
+  const cur = !!tareaData[k + '_check'];
+  tareaData[k + '_check'] = !cur;
+  save();
+  const tareas = TAREAS[persona];
+  document.getElementById('chk-' + k).classList.toggle('done', !cur);
+  document.getElementById('txt-' + k).classList.toggle('done', !cur);
+  const done = tareas.filter((_, i) => tareaData[getTKey(cid, persona, i) + '_check']).length;
+  const pct = Math.round(done / tareas.length * 100);
+  document.getElementById('pf-' + cid + '-' + persona).style.width = pct + '%';
+  document.getElementById('pt-' + cid + '-' + persona).textContent = done + ' de ' + tareas.length + ' tareas completadas';
+}
+
+function saveNota(k, tipo) {
+  const el = document.getElementById((tipo === 'nota' ? 'nota-' : 'link-') + k);
+  tareaData[k + '_' + tipo] = el.value;
+  save();
+}
+
+// ─── KANBAN ─────────────────────────────────────────────
+function renderKanban() {
+  const cols = { Identificada: 'k-id', 'En preparación': 'k-prep', Enviada: 'k-env', Ganada: 'k-gan' };
+  Object.values(cols).forEach(id => document.getElementById(id).innerHTML = '');
+  let counts = {};
+  convocatorias.forEach(c => {
+    const colId = cols[c.estado];
+    if (!colId) return;
+    counts[colId] = (counts[colId] || 0) + 1;
+    document.getElementById(colId).innerHTML += `
+      <div class="kanban-card">
+        <div class="kanban-card-title">${c.nombre}</div>
+        <div class="kanban-card-meta">${c.entidad}</div>
+        <div class="kanban-card-meta" style="margin-top:4px">${c.resp} · ${c.fecha}</div>
+      </div>`;
+  });
+  Object.entries(cols).forEach(([_, id]) => {
+    if (!counts[id]) document.getElementById(id).innerHTML = '<div class="kanban-empty">Vacío</div>';
+  });
+}
+
+// ─── ALERTAS ────────────────────────────────────────────
+function renderAlertas() {
+  const hoy = new Date();
+  const activas = convocatorias.filter(c => !['Descartada','Ganada','No ganada'].includes(c.estado));
+  const el = document.getElementById('alertas-lista');
+  if (!activas.length) { el.innerHTML = '<div class="empty-state"><strong>Sin alertas activas</strong>No hay convocatorias en curso.</div>'; return; }
+  const alertas = activas.map(c => {
+    const dias = Math.ceil((new Date(c.fecha) - hoy) / 86400000);
+    let icon, cls, label;
+    if (dias <= 3) { icon = '🚨'; cls = 'badge-rojo'; label = 'URGENTE'; }
+    else if (dias <= 7) { icon = '⏰'; cls = 'badge-amber'; label = 'ATENCIÓN'; }
+    else if (dias <= 15) { icon = '🔔'; cls = 'badge-azul'; label = 'AVISO'; }
+    else { icon = '📋'; cls = 'badge-gris'; label = 'PLANIFICACIÓN'; }
+    return { conv: c, dias, icon, cls, label };
+  }).sort((a, b) => a.dias - b.dias);
+  el.innerHTML = alertas.map(a => `
+    <div class="conv-card" style="margin-bottom:10px;border-left:4px solid ${a.dias<=3?'#C0392B':a.dias<=7?'#854F0B':a.dias<=15?'#185FA5':'var(--gris-borde)'}">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <span style="font-size:18px;margin-right:8px">${a.icon}</span>
+          <strong>${a.conv.nombre}</strong>
+        </div>
+        <span class="badge ${a.cls}">${a.label} · ${a.dias} días</span>
+      </div>
+      <div style="font-size:13px;color:var(--gris-texto);margin-top:4px">${a.conv.entidad} · Vence: ${a.conv.fecha} · Resp: ${a.conv.resp}</div>
+    </div>
+  `).join('');
+}
+
+// ─── HELPERS ────────────────────────────────────────────
+function estadoBadge(e) {
+  return { Identificada:'badge-gris', 'En preparación':'badge-morado', Enviada:'badge-azul', Ganada:'badge-verde', 'No ganada':'badge-rojo', Descartada:'badge-rojo' }[e] || 'badge-gris';
+}
+function elegBadge(e) {
+  return { si:'badge-verde', parcial:'badge-amber', pendiente:'badge-gris' }[e] || 'badge-gris';
+}
+function elegLabel(e) {
+  return { si:'Cumple elegibilidad', parcial:'Elegibilidad parcial', pendiente:'Elegibilidad pendiente' }[e] || e;
+}
+
+// ─── INIT ───────────────────────────────────────────────
+renderTablero();
+</script>
+</body>
+</html>
